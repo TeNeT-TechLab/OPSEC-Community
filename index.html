@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android Security Training - TeNeT</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="presentation-container">
+        <header class="presentation-header">
+            <div class="header-left">
+                <h1 class="presentation-title">Protecting Your Family from Account Hackers</h1>
+                <p class="presentation-subtitle">Android Security Training by TeNeT</p>
+                <p class="trainer-info">Gabriel Tenorio | TeNeT.TechLab@gmail.com</p>
+            </div>
+            <div class="header-right">
+                <div class="timer-display">
+                    <span class="timer-label">Timer:</span>
+                    <span id="timer">00:00</span>
+                </div>
+            </div>
+        </header>
+
+        <nav class="presentation-nav">
+            <button id="prevBtn" class="nav-btn">Previous</button>
+            <span id="slideCounter" class="slide-counter">1 / 7</span>
+            <button id="nextBtn" class="nav-btn">Next</button>
+            <button id="toggleNotes" class="nav-btn">Toggle Notes</button>
+        </nav>
+
+        <main class="presentation-main">
+            <!-- Slide 1: Introduction -->
+            <section class="slide active" data-slide="1">
+                <h2 class="slide-title">The Problem / El Problema</h2>
+                <div class="slide-content">
+                    <div class="problem-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">3.2B</span>
+                            <span class="stat-label">Passwords stolen in 2024</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">Minutes</span>
+                            <span class="stat-label">Time to hack accounts</span>
+                        </div>
+                    </div>
+                    
+                    <div class="key-message">
+                        <p><strong>If you've ever said "I didn't send that message," your account could be compromised.</strong></p>
+                    </div>
+
+                    <ul class="slide-list">
+                        <li>Hackers steal passwords from data breaches</li>
+                        <li>One compromised password = all your accounts at risk</li>
+                        <li>Family reputation and relationships suffer</li>
+                        <li>Financial accounts become vulnerable</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 2: Solution Overview -->
+            <section class="slide" data-slide="2">
+                <h2 class="slide-title">The Solution / La Solución</h2>
+                <div class="slide-content">
+                    <p class="slide-intro">Three simple tools that work together to protect your family:</p>
+                    
+                    <div class="solution-grid">
+                        <div class="solution-item">
+                            <h4> Password Manager</h4>
+                            <p>Like a safety deposit box for all your passwords</p>
+                        </div>
+                        
+                        <div class="solution-item">
+                            <h4> Two-Factor Authentication</h4>
+                            <p>Like having two keys for your front door</p>
+                        </div>
+                        
+                        <div class="solution-item">
+                            <h4> App Permissions</h4>
+                            <p>Control what apps can access on your phone</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3: Password Manager -->
+            <section class="slide" data-slide="3">
+                <h2 class="slide-title">Tool #1 — Password Safety</h2>
+                <div class="slide-content">
+                    <div class="tool-setup">
+                        <h4>Setup Path:</h4>
+                        <p class="setup-path">Settings  Google  Autofill  Passwords</p>
+                    </div>
+
+                    <div class="benefits-list">
+                        <h4>Benefits:</h4>
+                        <ul class="slide-list">
+                            <li>Never forget passwords again</li>
+                            <li>Use fingerprint to unlock</li>
+                            <li>Your phone remembers better than you can</li>
+                            <li>Automatic strong password generation</li>
+                        </ul>
+                    </div>
+
+                    <div class="pro-tip">
+                        <p><strong>Pro Tip:</strong> Enable "Auto sign-in" for convenience</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 4: Two-Factor Authentication -->
+            <section class="slide" data-slide="4">
+                <h2 class="slide-title">Tool #2 — Double Protection</h2>
+                <div class="slide-content">
+                    <div class="tool-setup">
+                        <h4>Setup:</h4>
+                        <p class="setup-path">Download Google Authenticator from Play Store</p>
+                    </div>
+
+                    <div class="benefits-list">
+                        <h4>How it works:</h4>
+                        <ul class="slide-list">
+                            <li>Prevents hackers even if they have your password</li>
+                            <li>Generates unique codes every 30 seconds</li>
+                            <li>Works without internet connection</li>
+                        </ul>
+                    </div>
+
+                    <div class="important-note">
+                        <h4> Important:</h4>
+                        <p>Save your backup codes in a safe place (not on your phone)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 5: App Permissions -->
+            <section class="slide" data-slide="5">
+                <h2 class="slide-title">Tool #3 — App Control</h2>
+                <div class="slide-content">
+                    <div class="tool-setup">
+                        <h4>Setup Path:</h4>
+                        <p class="setup-path">Settings  Apps  WhatsApp  Permissions</p>
+                    </div>
+
+                    <div class="permission-examples">
+                        <h4>Smart Permission Choices:</h4>
+                        <ul class="slide-list">
+                            <li><strong>WhatsApp:</strong> Needs camera, microphone, contacts</li>
+                            <li><strong>Games:</strong> Don't need your contacts or location</li>
+                            <li><strong>Flashlight apps:</strong> Only need camera (for the flash)</li>
+                        </ul>
+                    </div>
+
+                    <div class="privacy-indicator">
+                        <p><strong>Green dot in corner?</strong> An app is using your camera or microphone right now.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 6: Action Plan -->
+            <section class="slide" data-slide="6">
+                <h2 class="slide-title">Your Action Plan / Tu Plan de Acción</h2>
+                <div class="slide-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <span class="timeline-period">This Week</span>
+                            <p>Set up Google Password Manager on your phone</p>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <span class="timeline-period">Next Week</span>
+                            <p>Add 2FA to your bank and email accounts</p>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <span class="timeline-period">Next Month</span>
+                            <p>Review and update app permissions</p>
+                        </div>
+                    </div>
+
+                    <div class="support-section">
+                        <h4> Need Help?</h4>
+                        <p><strong>Gabriel Tenorio - TeNeT</strong><br>
+                        Email: <a href="mailto:TeNeT@TechLab.com">TeNeT@TechLab.com</a></p>
+                        <p>Join our WhatsApp support group for ongoing assistance!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 7: Emergency Recovery -->
+            <section class="slide" data-slide="7">
+                <h2 class="slide-title">Emergency Recovery (Bonus)</h2>
+                <div class="slide-content">
+                    <div class="emergency-steps">
+                        <h4>If Your Account Gets Hacked:</h4>
+                        <ol class="slide-list">
+                            <li>Don't panic - it's fixable</li>
+                            <li>Go to <strong>g.co/recover</strong> immediately</li>
+                            <li>Use a device and location Google recognizes</li>
+                            <li>Tell your family your account was hacked</li>
+                            <li>Follow Google's step-by-step recovery process</li>
+                        </ol>
+                    </div>
+
+                    <div class="reassurance">
+                        <p><strong>Remember:</strong> Google helps thousands of people recover accounts every day. You're not alone in this!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="presentation-footer">
+            <p>&copy; 2025 Gabriel Tenorio | TeNeT-TechLab | Android Security Training</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
