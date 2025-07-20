@@ -35,7 +35,7 @@
 
 This isn't just another boring security presentation. It's a **game-changing, interactive experience** designed to transform how families think about digital safety. No tech jargon, no overwhelming complexity - just **practical, life-saving knowledge** that anyone can understand and implement.
 
-### ✨ **Why Families Love This Training:**
+### ✨ **Why Families Need This Training:**
 
 <table align="center">
 <tr>
