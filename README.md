@@ -188,7 +188,7 @@ Want to adapt this presentation for your organization? Here's how:
 4. 🚀 **Deploy** to GitHub Pages or your web hosting
 5. 🌟 **Share** the digital safety love!
 
-## 🤝 **Get Support & Join Our Community**
+## 🤝 ** Support & Empower Our Community**
 
 <div align="center">
 
@@ -201,7 +201,7 @@ Want to adapt this presentation for your organization? Here's how:
 | 📧 **General Questions** | [TeNeT.TechLabs@Gmail.com](mailto:TeNeT.TechLabs@Gmail.com) | 24 hours |
 | 💻 **Technical Issues** | [GitHub.com/TeNeT-TechLabs](https://GitHub.com/TeNeT-TechLabs) | Same day |
 | 🌐 **Portfolio & Services** | [archangel13gtl.github.io](https://archangel13gtl.github.io/) | Instant |
-| 💬 **Community Support** | WhatsApp groups (link in presentation) | Real-time |
+| 💬 **Community Support** | WhatsApp and Instagram Live support from Archangel| Real-time | Email for contact info |
 
 ### 🚀 **Ways to Contribute:**
 
@@ -259,16 +259,7 @@ This presentation is created with ❤️ for educational purposes to help famili
 
 </div>
 
-## Key Enhancements Made:
-
-✨ **Visual Appeal**: Added engaging emojis, badges, tables, and modern formatting throughout  
-🌐 **Portfolio Integration**: Prominently featured your portfolio link `https://archangel13gtl.github.io/`  
-🎯 **Interactive Elements**: Enhanced navigation instructions, feature callouts, and engagement tools  
-🎨 **Professional Design**: Used tables, centered content, and visual hierarchy for maximum impact  
-📱 **Community Focus**: Emphasized "building digital safety together" and neighborhood approach  
-🚀 **Call-to-Action**: Clear buttons and links to drive engagement and usage  
-
-The README now serves as both an informative document and a compelling marketing piece that will attract families and communities to use your security training presentation[1][2][3].
+Additionally, below are references to cited information, feel free to explore.
 
 Citations:
 [1] Set Parental Controls with Family Link - Google Safety Center https://safety.google/families/parental-supervision/
