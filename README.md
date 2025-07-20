@@ -10,7 +10,7 @@
 
 ---
 
-## 🚀 **[LAUNCH LIVE PRESENTATION →](https://TeNeT-TechLab.github.io/android-security-presentation/)**
+## 🚀 **[LAUNCH LIVE PRESENTATION →](https://TeNeT-TechLab.github.io/OPSEC-Community)**
 ### 👆 *Click above to access the interactive training right now!*
 
 ---
