@@ -3,437 +3,467 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeNeT TechLab Security Hub - Building Digital Safety Together</title>
+    <title>TeNeT TechLab - OPSEC Community Hub</title>
     <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Building Digital Safety Together - Comprehensive Android and iOS security training for families and communities">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Background Effects -->
-    <div class="background-effects">
-        <div class="stars"></div>
-        <div class="particles"></div>
-        <canvas id="circuit-canvas"></canvas>
-    </div>
-
+    <div class="particles" id="particles"></div>
+    
     <!-- Header -->
-    <header class="header" id="header">
-        <nav class="nav container">
-            <div class="nav__brand">
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-brand">
                 <div class="logo-container">
-                    <div class="animated-logo">
-                        <span class="logo-text">Te<span class="neon">Ne</span>T</span>
-                        <div class="logo-subtitle">TechLab</div>
-                    </div>
+                    <!-- Placeholder for graphic logo (1.jpg) -->
+                    <div class="logo-graphic">TeNeT</div>
+                    <span class="brand-text">TechLab</span>
                 </div>
             </div>
             
-            <div class="nav__menu" id="nav-menu">
-                <ul class="nav__list">
-                    <li class="nav__item"><a href="#emergency" class="nav__link">Emergency</a></li>
-                    <li class="nav__item"><a href="#authenticator" class="nav__link">2FA Setup</a></li>
-                    <li class="nav__item"><a href="#tools" class="nav__link">Security Tools</a></li>
-                    <li class="nav__item"><a href="#advanced" class="nav__link">Advanced</a></li>
-                    <li class="nav__item"><a href="#contact" class="nav__link">Contact</a></li>
-                </ul>
-            </div>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
             
-            <div class="nav__toggle" id="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="nav-menu" id="navMenu">
+                <a href="#recovery" class="nav-link">Emergency Recovery</a>
+                <a href="#authenticator" class="nav-link">2FA Setup</a>
+                <a href="#tools" class="nav-link">Security Tools</a>
+                <a href="#advanced" class="nav-link">Advanced</a>
+                <a href="#contact" class="nav-link">Contact</a>
             </div>
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="hero">
-        <div class="container">
-            <div class="hero__content">
-                <h1 class="hero__title">
-                    <span class="text-gradient">Digital Security Crisis</span><br>
-                    Protection for Our Communities
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number glow">3.2B</span>
+                        <span class="stat-label">passwords compromised in 2024</span>
+                    </div>
+                    <div class="stat-divider">|</div>
+                    <div class="stat-item">
+                        <span class="stat-number glow">99.9%</span>
+                        <span class="stat-label">prevention with 2FA</span>
+                    </div>
+                </div>
+                
+                <h1 class="hero-title">
+                    Building Digital <span class="glow">Safety</span> Together
                 </h1>
-                <p class="hero__description">
-                    Over <strong>3.2 billion passwords</strong> were stolen in 2024. But together, we can achieve 
-                    <span class="neon-text">99.9% protection</span> with proper security measures.
+                <p class="hero-subtitle">
+                    For Our Communities - Comprehensive Android & iOS security training
                 </p>
-                <div class="hero__stats">
-                    <div class="stat-card">
-                        <div class="stat-number">3.2B+</div>
-                        <div class="stat-label">Passwords Stolen</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">99.9%</div>
-                        <div class="stat-label">Prevention Rate</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">2024</div>
-                        <div class="stat-label">Current Threat</div>
-                    </div>
-                </div>
-                <div class="hero__actions">
-                    <a href="#emergency" class="btn btn--primary btn--lg">Emergency Recovery</a>
-                    <a href="#authenticator" class="btn btn--outline btn--lg">Start Protection</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Emergency Recovery Section -->
-    <section class="section emergency-section" id="emergency">
-        <div class="container">
-            <div class="section__header">
-                <h2 class="section__title">🚨 Priority Emergency Recovery</h2>
-                <p class="section__subtitle">Already hacked? Take immediate action to secure your accounts</p>
-            </div>
-            
-            <div class="emergency-grid">
-                <div class="emergency-card">
-                    <div class="emergency-icon">📱</div>
-                    <h3>Google Account Recovery</h3>
-                    <p>Recover your Google/Android account immediately</p>
-                    <a href="https://g.co/recover" target="_blank" class="btn btn--primary recovery-btn">
-                        Recover Google Account
-                    </a>
-                </div>
                 
-                <div class="emergency-card">
-                    <div class="emergency-icon">🍎</div>
-                    <h3>Apple Account Recovery</h3>
-                    <p>Restore access to your Apple ID and iPhone</p>
-                    <a href="https://iforgot.apple.com" target="_blank" class="btn btn--primary recovery-btn">
-                        Recover Apple Account
+                <div class="hero-actions">
+                    <a href="#recovery" class="btn-primary pulse">
+                        🚨 Emergency Recovery
+                    </a>
+                    <a href="#tools" class="btn-secondary">
+                        🛡️ Start Securing
                     </a>
                 </div>
             </div>
+        </section>
 
-            <!-- Family Communication -->
-            <div class="family-messaging">
-                <h3>📢 Alert Your Family & Friends</h3>
-                <p>Copy and send this message to warn your contacts:</p>
-                
-                <div class="message-tabs">
-                    <button class="tab-btn active" data-tab="english">English</button>
-                    <button class="tab-btn" data-tab="spanish">Español</button>
+        <!-- Emergency Recovery Section -->
+        <section id="recovery" class="section emergency-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title glow">🚨 Emergency Account Recovery</h2>
+                    <p class="section-subtitle">Accounts get hacked every 15-30 minutes. Here's your immediate action plan.</p>
                 </div>
                 
-                <div class="message-content">
-                    <div class="message-box active" id="english-message">
-                        <p class="message-text">Hi everyone - my account was hacked. If you got strange messages from me, please ignore them. I'm getting my account back and will let you know when it's safe again. This happens to millions of people - it's not my fault and we'll fix it together.</p>
-                        <button class="btn btn--secondary copy-btn" data-copy="english">
-                            📋 Copy Message
+                <div class="recovery-grid">
+                    <div class="recovery-card">
+                        <div class="recovery-image">
+                            <!-- Placeholder for account recovery image (4.jpg) -->
+                            <div class="placeholder-image recovery-placeholder">
+                                <span>🔒</span>
+                                <p>Account Recovery Visual Guide</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="recovery-steps">
+                        <div class="platform-tabs">
+                            <button class="tab-btn active" data-platform="android">Android/Google</button>
+                            <button class="tab-btn" data-platform="ios">iOS/Apple</button>
+                        </div>
+                        
+                        <div class="platform-content active" data-platform="android">
+                            <h3>Google Account Recovery</h3>
+                            <div class="step-list">
+                                <div class="step-item">
+                                    <span class="step-number">1</span>
+                                    <div class="step-content">
+                                        <p><strong>Go immediately to:</strong></p>
+                                        <div class="recovery-link">
+                                            <input type="text" value="https://g.co/recover" readonly id="googleRecovery">
+                                            <button class="copy-btn" data-target="googleRecovery">Copy</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <span class="step-number">2</span>
+                                    <div class="step-content">
+                                        <p>Follow Google's official recovery process</p>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <span class="step-number">3</span>
+                                    <div class="step-content">
+                                        <p>Change password immediately after recovery</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="platform-content" data-platform="ios">
+                            <h3>Apple ID Recovery</h3>
+                            <div class="step-list">
+                                <div class="step-item">
+                                    <span class="step-number">1</span>
+                                    <div class="step-content">
+                                        <p><strong>Go immediately to:</strong></p>
+                                        <div class="recovery-link">
+                                            <input type="text" value="https://iforgot.apple.com" readonly id="appleRecovery">
+                                            <button class="copy-btn" data-target="appleRecovery">Copy</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <span class="step-number">2</span>
+                                    <div class="step-content">
+                                        <p>Follow Apple's official recovery process</p>
+                                    </div>
+                                </div>
+                                <div class="step-item">
+                                    <span class="step-number">3</span>
+                                    <div class="step-content">
+                                        <p>Enable two-factor authentication immediately</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Family Communication Messages -->
+                <div class="family-messages">
+                    <h3>📱 Message Templates for Your Family</h3>
+                    <div class="message-tabs">
+                        <button class="msg-tab active" data-lang="english">English</button>
+                        <button class="msg-tab" data-lang="spanish">Español</button>
+                    </div>
+                    
+                    <div class="message-content active" data-lang="english">
+                        <div class="message-box">
+                            <p><strong>Group Message:</strong></p>
+                            <div class="copyable-message">
+                                <textarea readonly id="englishGroup">Hi everyone - my account was hacked. If you got strange messages from me, please ignore them. I'm getting my account back and will let you know when it's safe again. This happens to millions of people - it's not my fault and we'll fix it together.</textarea>
+                                <button class="copy-btn" data-target="englishGroup">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="message-content" data-lang="spanish">
+                        <div class="message-box">
+                            <p><strong>Mensaje Grupal:</strong></p>
+                            <div class="copyable-message">
+                                <textarea readonly id="spanishGroup">Hola a todos - hackearon mi cuenta. Si recibieron mensajes extraños de mí, por favor ignórenlos. Estoy recuperando mi cuenta y les avisaré cuando esté segura otra vez. Esto le pasa a millones de personas - no es mi culpa y lo arreglaremos juntos.</textarea>
+                                <button class="copy-btn" data-target="spanishGroup">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Two-Factor Authentication Section -->
+        <section id="authenticator" class="section auth-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title glow">🔑 Two-Factor Authentication Setup</h2>
+                    <p class="section-subtitle">Like needing two keys for your front door - adds 99.9% protection</p>
+                </div>
+                
+                <div class="auth-grid">
+                    <div class="auth-visual">
+                        <!-- Placeholder for authenticator image (5.jpg) -->
+                        <div class="placeholder-image auth-placeholder">
+                            <span>📱</span>
+                            <p>2FA Setup Guide</p>
+                        </div>
+                    </div>
+                    
+                    <div class="auth-steps">
+                        <div class="platform-tabs">
+                            <button class="tab-btn active" data-platform="android">Android</button>
+                            <button class="tab-btn" data-platform="ios">iOS</button>
+                        </div>
+                        
+                        <div class="platform-content active" data-platform="android">
+                            <h3>Google Authenticator Setup</h3>
+                            <ol class="setup-steps">
+                                <li>Download Google Authenticator from Play Store</li>
+                                <li>Go to Settings → Google → Autofill → Passwords</li>
+                                <li>Enable 2-Step Verification</li>
+                                <li>Choose Authenticator app method</li>
+                                <li>Scan QR code with Authenticator</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="platform-content" data-platform="ios">
+                            <h3>iOS 2FA Setup</h3>
+                            <ol class="setup-steps">
+                                <li>Go to Settings → [Your Name] → Sign-In & Security</li>
+                                <li>Turn on Two-Factor Authentication</li>
+                                <li>Add trusted phone number</li>
+                                <li>Optional: Download Microsoft Authenticator for other accounts</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Tools Section -->
+        <section id="tools" class="section tools-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title glow">🛡️ Essential Security Tools</h2>
+                    <p class="section-subtitle">Simple analogies to understand digital protection</p>
+                </div>
+                
+                <div class="platform-selector">
+                    <button class="platform-btn active" data-platform="android">
+                        <span class="platform-icon">🤖</span>
+                        Android
+                    </button>
+                    <button class="platform-btn" data-platform="ios">
+                        <span class="platform-icon">🍎</span>
+                        iOS
+                    </button>
+                </div>
+                
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-icon">🔐</div>
+                        <h3>Password Manager</h3>
+                        <p class="tool-analogy">Like a safety deposit box for passwords</p>
+                        
+                        <div class="tool-platform active" data-platform="android">
+                            <p><strong>Tool:</strong> Google Password Manager</p>
+                            <p><strong>Location:</strong> Settings → Google → Autofill → Passwords</p>
+                            <p><strong>Cost:</strong> <span class="free-badge">Free</span></p>
+                        </div>
+                        
+                        <div class="tool-platform" data-platform="ios">
+                            <p><strong>Tool:</strong> iCloud Keychain</p>
+                            <p><strong>Location:</strong> Settings → Passwords</p>
+                            <p><strong>Cost:</strong> <span class="free-badge">Built-in</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">🔑</div>
+                        <h3>Two-Factor Authentication</h3>
+                        <p class="tool-analogy">Like needing two keys for your front door</p>
+                        
+                        <div class="tool-platform active" data-platform="android">
+                            <p><strong>Tool:</strong> Google Authenticator</p>
+                            <p><strong>Location:</strong> Download from Play Store</p>
+                            <p><strong>Cost:</strong> <span class="free-badge">Free</span></p>
+                        </div>
+                        
+                        <div class="tool-platform" data-platform="ios">
+                            <p><strong>Tool:</strong> Built-in 2FA + Authenticator Apps</p>
+                            <p><strong>Location:</strong> Settings → [Your Name] → Sign-In & Security</p>
+                            <p><strong>Cost:</strong> <span class="free-badge">Built-in</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">🚪</div>
+                        <h3>App Permissions</h3>
+                        <p class="tool-analogy">Like controlling access to rooms in your house</p>
+                        
+                        <div class="tool-platform active" data-platform="android">
+                            <p><strong>Tool:</strong> Built-in Permission Manager</p>
+                            <p><strong>Location:</strong> Settings → Apps → [App Name] → Permissions</p>
+                            <p><strong>Cost:</strong> <span class="free-badge">Built-in</span></p>
+                        </div>
+                        
+                        <div class="tool-platform" data-platform="ios">
+                            <p><strong>Tool:</strong> Privacy & Security Settings</p>
+                            <p><strong>Location:</strong> Settings → Privacy & Security → [Permission Type]</p>
+                            <p><strong>Cost:</strong> <span class="free-badge">Built-in</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Features Section -->
+        <section id="advanced" class="section advanced-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title glow">⚡ Advanced Security Features</h2>
+                    <p class="section-subtitle">Power user tools for enhanced protection</p>
+                </div>
+                
+                <div class="advanced-features">
+                    <div class="feature-item">
+                        <button class="feature-toggle" data-target="vpn-guide">
+                            <span class="feature-icon">🌐</span>
+                            <span class="feature-title">VPN Setup Guide</span>
+                            <span class="toggle-icon">+</span>
                         </button>
-                    </div>
-                    
-                    <div class="message-box" id="spanish-message">
-                        <p class="message-text">Hola a todos - hackearon mi cuenta. Si recibieron mensajes extraños de mí, por favor ignórenlos. Estoy recuperando mi cuenta y les avisaré cuando esté segura otra vez. Esto le pasa a millones de personas - no es mi culpa y lo arreglaremos juntos.</p>
-                        <button class="btn btn--secondary copy-btn" data-copy="spanish">
-                            📋 Copiar Mensaje
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Two-Factor Authentication Section -->
-    <section class="section" id="authenticator">
-        <div class="container">
-            <div class="section__header">
-                <h2 class="section__title">🔐 Two-Factor Authentication Setup</h2>
-                <p class="section__subtitle">Like needing two keys for your front door - your password PLUS your phone</p>
-            </div>
-
-            <div class="platform-tabs">
-                <button class="platform-tab active" data-platform="android">
-                    🤖 Android Setup
-                </button>
-                <button class="platform-tab" data-platform="ios">
-                    🍎 iOS Setup
-                </button>
-            </div>
-
-            <div class="platform-content">
-                <div class="platform-panel active" id="android-2fa">
-                    <div class="setup-steps">
-                        <div class="step-card">
-                            <div class="step-number">1</div>
-                            <h4>Install Google Authenticator</h4>
-                            <p>Download from Google Play Store</p>
-                            <button class="btn btn--outline expand-btn" data-target="android-step1">
-                                View Details
-                            </button>
-                            <div class="step-details" id="android-step1">
-                                <ul>
-                                    <li>Open Google Play Store</li>
-                                    <li>Search "Google Authenticator"</li>
-                                    <li>Install the official Google app</li>
-                                    <li>Open the app and grant camera permissions</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="step-card">
-                            <div class="step-number">2</div>
-                            <h4>Enable 2FA on Your Accounts</h4>
-                            <p>Add two-factor authentication to important accounts</p>
-                            <button class="btn btn--outline expand-btn" data-target="android-step2">
-                                View Details
-                            </button>
-                            <div class="step-details" id="android-step2">
-                                <ul>
-                                    <li>Go to account security settings</li>
-                                    <li>Look for "Two-Factor Authentication" or "2FA"</li>
-                                    <li>Choose "Authenticator app" option</li>
-                                    <li>Scan QR code with Google Authenticator</li>
-                                    <li>Enter the 6-digit code to verify</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="step-card">
-                            <div class="step-number">3</div>
-                            <h4>Save Backup Codes</h4>
-                            <p>Keep recovery codes in a safe place</p>
-                            <button class="btn btn--outline expand-btn" data-target="android-step3">
-                                View Details
-                            </button>
-                            <div class="step-details" id="android-step3">
-                                <ul>
-                                    <li>Download or write down backup codes</li>
-                                    <li>Store codes in a secure location</li>
-                                    <li>Don't take photos of codes</li>
-                                    <li>Each code can only be used once</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="platform-panel" id="ios-2fa">
-                    <div class="setup-steps">
-                        <div class="step-card">
-                            <div class="step-number">1</div>
-                            <h4>Use Built-in Apple 2FA</h4>
-                            <p>Apple devices have built-in two-factor authentication</p>
-                            <button class="btn btn--outline expand-btn" data-target="ios-step1">
-                                View Details
-                            </button>
-                            <div class="step-details" id="ios-step1">
-                                <ul>
-                                    <li>Go to Settings → [Your Name]</li>
-                                    <li>Tap "Sign-In & Security"</li>
-                                    <li>Tap "Two-Factor Authentication"</li>
-                                    <li>Follow the setup instructions</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="step-card">
-                            <div class="step-number">2</div>
-                            <h4>Install Additional Authenticator</h4>
-                            <p>For non-Apple accounts, use an authenticator app</p>
-                            <button class="btn btn--outline expand-btn" data-target="ios-step2">
-                                View Details
-                            </button>
-                            <div class="step-details" id="ios-step2">
-                                <ul>
-                                    <li>Download "Google Authenticator" from App Store</li>
-                                    <li>Or use "Microsoft Authenticator"</li>
-                                    <li>Grant camera permissions</li>
-                                    <li>Scan QR codes for each account</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <div class="step-card">
-                            <div class="step-number">3</div>
-                            <h4>Backup Your Codes</h4>
-                            <p>Save recovery information securely</p>
-                            <button class="btn btn--outline expand-btn" data-target="ios-step3">
-                                View Details
-                            </button>
-                            <div class="step-details" id="ios-step3">
-                                <ul>
-                                    <li>Write down recovery codes on paper</li>
-                                    <li>Store in a secure physical location</li>
-                                    <li>Consider using iCloud Keychain for passwords</li>
-                                    <li>Enable recovery contact if available</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Security Tools Section -->
-    <section class="section" id="tools">
-        <div class="container">
-            <div class="section__header">
-                <h2 class="section__title">🛡️ Essential Security Tools</h2>
-                <p class="section__subtitle">Cross-platform security features available on both Android and iOS</p>
-            </div>
-
-            <div class="tools-grid">
-                <div class="tool-card">
-                    <div class="tool-icon">🔑</div>
-                    <h3>Password Manager</h3>
-                    <p class="tool-analogy">Like a safety deposit box for your passwords</p>
-                    
-                    <div class="tool-platforms">
-                        <div class="platform-info">
-                            <strong>Android:</strong> Settings → Google → Autofill → Passwords
-                        </div>
-                        <div class="platform-info">
-                            <strong>iOS:</strong> Settings → Passwords (iCloud Keychain)
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tool-card">
-                    <div class="tool-icon">🔐</div>
-                    <h3>Two-Factor Authentication</h3>
-                    <p class="tool-analogy">Like needing two keys for your front door</p>
-                    
-                    <div class="tool-platforms">
-                        <div class="platform-info">
-                            <strong>Android:</strong> Google Authenticator app
-                        </div>
-                        <div class="platform-info">
-                            <strong>iOS:</strong> Built-in Apple 2FA + Authenticator apps
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tool-card">
-                    <div class="tool-icon">🛡️</div>
-                    <h3>App Permissions</h3>
-                    <p class="tool-analogy">Like deciding who enters different rooms in your house</p>
-                    
-                    <div class="tool-platforms">
-                        <div class="platform-info">
-                            <strong>Android:</strong> Settings → Apps → [App] → Permissions
-                        </div>
-                        <div class="platform-info">
-                            <strong>iOS:</strong> Settings → Privacy & Security → [Permission]
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Advanced Features Section -->
-    <section class="section" id="advanced">
-        <div class="container">
-            <div class="section__header">
-                <h2 class="section__title">⚡ Advanced Security Features</h2>
-                <p class="section__subtitle">For power users who want maximum protection</p>
-            </div>
-
-            <div class="advanced-features">
-                <div class="feature-accordion">
-                    <div class="accordion-item">
-                        <button class="accordion-header" data-target="feature1">
-                            🔍 Security Audits
-                            <span class="accordion-icon">+</span>
-                        </button>
-                        <div class="accordion-content" id="feature1">
-                            <p>Regular security checkups for your accounts and devices. Learn how to identify vulnerabilities and fix them before attackers can exploit them.</p>
+                        <div class="feature-content" id="vpn-guide">
+                            <p>Virtual Private Networks encrypt your internet connection, making it harder for others to see what you're doing online.</p>
                             <ul>
-                                <li>Password strength analysis</li>
-                                <li>Account breach monitoring</li>
-                                <li>Device security assessment</li>
+                                <li>Free options: Proton VPN, Windscribe</li>
+                                <li>Premium options: NordVPN, ExpressVPN</li>
+                                <li>Built-in options: iCloud Private Relay (iOS)</li>
                             </ul>
                         </div>
                     </div>
-
-                    <div class="accordion-item">
-                        <button class="accordion-header" data-target="feature2">
-                            🌐 VPN Setup & Usage
-                            <span class="accordion-icon">+</span>
+                    
+                    <div class="feature-item">
+                        <button class="feature-toggle" data-target="secure-messaging">
+                            <span class="feature-icon">💬</span>
+                            <span class="feature-title">Secure Messaging</span>
+                            <span class="toggle-icon">+</span>
                         </button>
-                        <div class="accordion-content" id="feature2">
-                            <p>Virtual Private Networks protect your internet connection, especially on public Wi-Fi. Learn which VPNs are trustworthy and how to configure them properly.</p>
+                        <div class="feature-content" id="secure-messaging">
+                            <p>End-to-end encrypted messaging apps ensure only you and the recipient can read messages.</p>
                             <ul>
-                                <li>Recommended VPN services</li>
-                                <li>Mobile VPN configuration</li>
-                                <li>When to use VPN protection</li>
+                                <li>Signal - Most secure option</li>
+                                <li>WhatsApp - Widely used with encryption</li>
+                                <li>iMessage - Built-in for iOS users</li>
                             </ul>
                         </div>
                     </div>
-
-                    <div class="accordion-item">
-                        <button class="accordion-header" data-target="feature3">
-                            📧 Secure Communication
-                            <span class="accordion-icon">+</span>
+                    
+                    <div class="feature-item">
+                        <button class="feature-toggle" data-target="backup-strategy">
+                            <span class="feature-icon">☁️</span>
+                            <span class="feature-title">Backup Strategy</span>
+                            <span class="toggle-icon">+</span>
                         </button>
-                        <div class="accordion-content" id="feature3">
-                            <p>End-to-end encrypted messaging and email to keep your conversations private. Essential for sensitive family and business communications.</p>
+                        <div class="feature-content" id="backup-strategy">
+                            <p>Regular backups protect your data from device loss, theft, or corruption.</p>
                             <ul>
-                                <li>Signal messenger setup</li>
-                                <li>WhatsApp security features</li>
-                                <li>ProtonMail email encryption</li>
+                                <li>Android: Google One automatic backup</li>
+                                <li>iOS: iCloud backup</li>
+                                <li>Manual: External drive or cloud service</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Contact Section -->
-    <section class="section" id="contact">
-        <div class="container">
-            <div class="section__header">
-                <h2 class="section__title">🤝 Building Digital Safety Together</h2>
-                <p class="section__subtitle">Connect with our community and access additional resources</p>
-            </div>
-
-            <div class="contact-grid">
-                <div class="contact-card">
-                    <div class="contact-icon">📧</div>
-                    <h3>Email Support</h3>
-                    <p>Get help with security questions</p>
-                    <a href="mailto:TeNeT.TechLabs@Gmail.com" class="contact-link">
-                        TeNeT.TechLabs@Gmail.com
-                    </a>
+        <!-- Contact Section -->
+        <section id="contact" class="section contact-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title glow">📞 Get Help & Connect</h2>
+                    <p class="section-subtitle">Community support and resources</p>
                 </div>
-
-                <div class="contact-card">
-                    <div class="contact-icon">💻</div>
-                    <h3>Portfolio & Resources</h3>
-                    <p>Access our full security toolkit</p>
-                    <a href="https://archangel13gtl.github.io/" target="_blank" class="contact-link">
-                        Visit Portfolio
-                    </a>
-                </div>
-
-                <div class="contact-card">
-                    <div class="contact-icon">🔗</div>
-                    <h3>GitHub Projects</h3>
-                    <p>Open source security tools</p>
-                    <a href="https://GitHub.com/TeNeT-TechLabs" target="_blank" class="contact-link">
-                        View Projects
-                    </a>
+                
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <span class="contact-icon">📧</span>
+                            <div>
+                                <h3>Email Support</h3>
+                                <a href="mailto:TeNeT.TechLabs@Gmail.com">TeNeT.TechLabs@Gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <span class="contact-icon">💻</span>
+                            <div>
+                                <h3>GitHub Repository</h3>
+                                <a href="https://GitHub.com/TeNeT-TechLabs" target="_blank">GitHub.com/TeNeT-TechLabs</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <span class="contact-icon">🌟</span>
+                            <div>
+                                <h3>Portfolio</h3>
+                                <a href="https://archangel13gtl.github.io/" target="_blank">View Developer Portfolio</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="qr-section">
+                        <!-- Placeholder for QR code (3.jpg) -->
+                        <div class="qr-container">
+                            <div class="placeholder-image qr-placeholder">
+                                <span>📱</span>
+                                <p>QR Code</p>
+                            </div>
+                            <p class="qr-label">Scan to visit developer portfolio</p>
+                            <a href="https://archangel13gtl.github.io/" target="_blank" class="portfolio-link">
+                                archangel13gtl.github.io
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="community-message">
-                <p>🌟 <strong>Remember:</strong> Digital security is a community effort. Share this knowledge with your family and friends. Together, we can make the internet safer for everyone.</p>
-            </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer__content">
-                <p>&copy; 2025 TeNeT TechLab. Building Digital Safety Together - For Our Communities.</p>
-                <p>
-                    <a href="https://tenet-techlab.github.io/OPSEC-Community/" target="_blank">OPSEC Community Hub</a>
-                </p>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <!-- Placeholder for simple logo (2.jpg) -->
+                    <div class="footer-logo">
+                        <span class="footer-logo-text">TeNeT</span>
+                        <span class="footer-subtitle">TechLab</span>
+                    </div>
+                    <p>Building Digital Safety Together</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-section">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="#recovery">Emergency Recovery</a></li>
+                            <li><a href="#authenticator">2FA Setup</a></li>
+                            <li><a href="#tools">Security Tools</a></li>
+                            <li><a href="#advanced">Advanced Features</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h4>Resources</h4>
+                        <ul>
+                            <li><a href="https://g.co/recover" target="_blank">Google Recovery</a></li>
+                            <li><a href="https://iforgot.apple.com" target="_blank">Apple Recovery</a></li>
+                            <li><a href="https://GitHub.com/TeNeT-TechLabs" target="_blank">GitHub</a></li>
+                            <li><a href="https://archangel13gtl.github.io/" target="_blank">Portfolio</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 TeNeT TechLab OPSEC Community. Building safer digital communities together.</p>
             </div>
         </div>
     </footer>
