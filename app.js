@@ -1,374 +1,228 @@
-// DOM Elements
-const navToggle = document.getElementById('nav-toggle');
-const navMenu = document.getElementById('nav-menu');
-const navLinks = document.querySelectorAll('.nav__link');
-const platformTabs = document.querySelectorAll('.platform-tab');
-const platformPanels = document.querySelectorAll('.platform-panel');
-const expandBtns = document.querySelectorAll('.expand-btn');
-const copyBtns = document.querySelectorAll('.copy-btn');
-const messageTabs = document.querySelectorAll('.tab-btn');
-const messageBoxes = document.querySelectorAll('.message-box');
-const accordionHeaders = document.querySelectorAll('.accordion-header');
-const circuitCanvas = document.getElementById('circuit-canvas');
+// TeNeT TechLab OPSEC Community - Interactive Features
 
-// Family messages data
-const familyMessages = {
-    english: "Hi everyone - my account was hacked. If you got strange messages from me, please ignore them. I'm getting my account back and will let you know when it's safe again. This happens to millions of people - it's not my fault and we'll fix it together.",
-    spanish: "Hola a todos - hackearon mi cuenta. Si recibieron mensajes extraños de mí, por favor ignórenlos. Estoy recuperando mi cuenta y les avisaré cuando esté segura otra vez. Esto le pasa a millones de personas - no es mi culpa y lo arreglaremos juntos."
-};
-
-// Initialize app
 document.addEventListener('DOMContentLoaded', function() {
-    initNavigation();
+    // Initialize all interactive features
+    initMobileNav();
     initPlatformTabs();
-    initExpandButtons();
-    initCopyButtons();
     initMessageTabs();
+    initCopyButtons();
     initAccordion();
-    initCircuitAnimation();
-    initSmoothScrolling();
-    showSuccessMessage();
+    initSmoothScroll();
+    initScrollEffects();
+    initExternalLinks();
 });
 
-// Navigation functionality
-function initNavigation() {
-    // Mobile menu toggle
+// Mobile Navigation Toggle
+function initMobileNav() {
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
             navToggle.classList.toggle('active');
-            document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+            navMenu.classList.toggle('active');
         });
-    }
-
-    // Close mobile menu when clicking nav links
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            if (navMenu.classList.contains('active')) {
-                navMenu.classList.remove('active');
+        
+        // Close menu when clicking on links
+        const navLinks = navMenu.querySelectorAll('.nav__link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
                 navToggle.classList.remove('active');
-                document.body.style.overflow = '';
-            }
+                navMenu.classList.remove('active');
+            });
         });
-    });
-
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
-            navMenu.classList.remove('active');
-            navToggle.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    });
-
-    // Header scroll effect
-    const header = document.getElementById('header');
-    if (header) {
-        window.addEventListener('scroll', function() {
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(5, 5, 5, 0.98)';
-                header.style.boxShadow = '0 2px 20px rgba(0, 255, 136, 0.1)';
-            } else {
-                header.style.background = 'rgba(5, 5, 5, 0.95)';
-                header.style.boxShadow = 'none';
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+                navToggle.classList.remove('active');
+                navMenu.classList.remove('active');
             }
         });
     }
 }
 
-// Platform tabs functionality
+// Platform Tabs for 2FA Setup (Android/iOS)
 function initPlatformTabs() {
-    platformTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            const platform = this.getAttribute('data-platform');
+    const platformBtns = document.querySelectorAll('.platform-btn');
+    
+    platformBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const platform = this.dataset.platform;
             
-            // Remove active class from all tabs and panels
-            platformTabs.forEach(t => t.classList.remove('active'));
-            platformPanels.forEach(p => p.classList.remove('active'));
+            // Remove active class from all buttons
+            platformBtns.forEach(b => b.classList.remove('active'));
             
-            // Add active class to clicked tab and corresponding panel
+            // Add active class to clicked button
             this.classList.add('active');
-            const targetPanel = document.getElementById(`${platform}-2fa`);
-            if (targetPanel) {
-                targetPanel.classList.add('active');
-            }
-
-            // Add visual feedback
-            addButtonFeedback(this);
-        });
-    });
-}
-
-// Expand/collapse functionality
-function initExpandButtons() {
-    expandBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const targetId = this.getAttribute('data-target');
-            const target = document.getElementById(targetId);
             
-            if (target) {
-                const isExpanded = target.classList.contains('expanded');
-                
-                if (isExpanded) {
-                    target.classList.remove('expanded');
-                    this.textContent = 'View Details';
-                } else {
-                    target.classList.add('expanded');
-                    this.textContent = 'Hide Details';
-                }
-
-                // Add visual feedback
-                addButtonFeedback(this);
-            }
-        });
-    });
-}
-
-// Copy message functionality
-function initCopyButtons() {
-    copyBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const messageType = this.getAttribute('data-copy');
-            const message = familyMessages[messageType];
+            // Hide all platform contents
+            const allContents = document.querySelectorAll('.platform-content');
+            allContents.forEach(content => {
+                content.classList.add('hidden');
+            });
             
-            if (message) {
-                // Try to use the Clipboard API first
-                if (navigator.clipboard && window.isSecureContext) {
-                    navigator.clipboard.writeText(message).then(() => {
-                        showCopySuccess(this, messageType);
-                    }).catch(() => {
-                        // Fallback to older method
-                        copyToClipboardFallback(message, this, messageType);
-                    });
-                } else {
-                    // Fallback for older browsers or non-HTTPS
-                    copyToClipboardFallback(message, this, messageType);
-                }
+            // Show corresponding content
+            const targetContent = document.getElementById(`${platform}-content`);
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
             }
         });
     });
 }
 
-// Fallback copy method
-function copyToClipboardFallback(text, button, messageType) {
-    const textArea = document.createElement('textarea');
-    textArea.value = text;
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-999999px';
-    textArea.style.top = '-999999px';
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-    
-    try {
-        document.execCommand('copy');
-        showCopySuccess(button, messageType);
-    } catch (err) {
-        console.error('Failed to copy text: ', err);
-        showCopyError(button);
-    }
-    
-    document.body.removeChild(textArea);
-}
-
-// Show copy success message
-function showCopySuccess(button, messageType) {
-    const originalText = button.innerHTML;
-    const successText = messageType === 'spanish' ? '✓ ¡Copiado!' : '✓ Copied!';
-    
-    button.innerHTML = successText;
-    button.style.background = 'linear-gradient(135deg, #00ff88, #00d4ff)';
-    button.style.color = '#0a0a0a';
-    
-    setTimeout(() => {
-        button.innerHTML = originalText;
-        button.style.background = '';
-        button.style.color = '';
-    }, 2000);
-
-    // Add visual feedback
-    addButtonFeedback(button);
-}
-
-// Show copy error message
-function showCopyError(button) {
-    const originalText = button.innerHTML;
-    button.innerHTML = '✗ Error';
-    button.style.background = '#ff0040';
-    
-    setTimeout(() => {
-        button.innerHTML = originalText;
-        button.style.background = '';
-    }, 2000);
-}
-
-// Message language tabs
+// Message Language Tabs (English/Spanish)
 function initMessageTabs() {
-    messageTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            const targetLang = this.getAttribute('data-tab');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const tabId = this.dataset.tab;
             
-            // Remove active class from all tabs and message boxes
-            messageTabs.forEach(t => t.classList.remove('active'));
-            messageBoxes.forEach(box => box.classList.remove('active'));
+            // Remove active class from all buttons
+            tabBtns.forEach(b => b.classList.remove('active'));
             
-            // Add active class to clicked tab and corresponding message box
+            // Add active class to clicked button
             this.classList.add('active');
-            const targetBox = document.getElementById(`${targetLang}-message`);
-            if (targetBox) {
-                targetBox.classList.add('active');
-            }
-
-            // Add visual feedback
-            addButtonFeedback(this);
-        });
-    });
-}
-
-// Accordion functionality
-function initAccordion() {
-    accordionHeaders.forEach(header => {
-        header.addEventListener('click', function() {
-            const targetId = this.getAttribute('data-target');
-            const target = document.getElementById(targetId);
-            const accordionItem = this.closest('.accordion-item');
             
-            if (target && accordionItem) {
-                const isExpanded = target.classList.contains('expanded');
-                
-                // Close all other accordion items
-                accordionHeaders.forEach(otherHeader => {
-                    if (otherHeader !== this) {
-                        const otherId = otherHeader.getAttribute('data-target');
-                        const otherTarget = document.getElementById(otherId);
-                        const otherItem = otherHeader.closest('.accordion-item');
-                        
-                        if (otherTarget && otherItem) {
-                            otherTarget.classList.remove('expanded');
-                            otherItem.classList.remove('active');
-                        }
-                    }
-                });
-                
-                // Toggle current item
-                if (isExpanded) {
-                    target.classList.remove('expanded');
-                    accordionItem.classList.remove('active');
-                } else {
-                    target.classList.add('expanded');
-                    accordionItem.classList.add('active');
-                }
-
-                // Add visual feedback
-                addButtonFeedback(this);
+            // Hide all tab contents
+            const allTabContents = document.querySelectorAll('.tab-content');
+            allTabContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Show corresponding tab content
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
             }
         });
     });
 }
 
-// Circuit board animation
-function initCircuitAnimation() {
-    if (!circuitCanvas) return;
-
-    const ctx = circuitCanvas.getContext('2d');
-    let animationId;
-
-    function resizeCanvas() {
-        circuitCanvas.width = window.innerWidth;
-        circuitCanvas.height = window.innerHeight;
-    }
-
-    function drawCircuit() {
-        ctx.clearRect(0, 0, circuitCanvas.width, circuitCanvas.height);
-        
-        const time = Date.now() * 0.001;
-        const gridSize = 50;
-        
-        ctx.strokeStyle = 'rgba(0, 255, 136, 0.1)';
-        ctx.lineWidth = 1;
-        
-        // Draw grid
-        for (let x = 0; x < circuitCanvas.width; x += gridSize) {
-            for (let y = 0; y < circuitCanvas.height; y += gridSize) {
-                // Horizontal lines
-                if (Math.random() > 0.7) {
-                    ctx.beginPath();
-                    ctx.moveTo(x, y);
-                    ctx.lineTo(x + gridSize, y);
-                    ctx.stroke();
+// Copy to Clipboard Functionality
+function initCopyButtons() {
+    const messages = {
+        english: "IMPORTANT: Someone may be using my compromised account to scam you. DO NOT send money, gift cards, or personal information to anyone claiming to be me until we speak in person or over the phone. Stay safe! - [Your Name]",
+        spanish: "IMPORTANTE: Alguien puede estar usando mi cuenta comprometida para estafarlos. NO envíen dinero, tarjetas de regalo, o información personal a nadie que diga ser yo hasta que hablemos en persona o por teléfono. ¡Manténganse seguros! - [Tu Nombre]"
+    };
+    
+    const copyBtns = document.querySelectorAll('.copy-btn');
+    
+    copyBtns.forEach(btn => {
+        btn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const messageType = this.dataset.message;
+            const textToCopy = messages[messageType];
+            
+            try {
+                // Modern clipboard API (preferred method)
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(textToCopy);
+                    showCopyFeedback(this, 'Copied!');
+                } else {
+                    // Fallback method
+                    const textarea = document.createElement('textarea');
+                    textarea.value = textToCopy;
+                    textarea.style.position = 'fixed';
+                    textarea.style.left = '-999999px';
+                    textarea.style.top = '-999999px';
+                    document.body.appendChild(textarea);
+                    
+                    textarea.focus();
+                    textarea.select();
+                    
+                    const successful = document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    
+                    if (successful) {
+                        showCopyFeedback(this, 'Copied!');
+                    } else {
+                        showCopyFeedback(this, 'Copy failed');
+                    }
                 }
-                
-                // Vertical lines
-                if (Math.random() > 0.7) {
-                    ctx.beginPath();
-                    ctx.moveTo(x, y);
-                    ctx.lineTo(x, y + gridSize);
-                    ctx.stroke();
-                }
-                
-                // Circuit nodes
-                if (Math.random() > 0.9) {
-                    ctx.fillStyle = `rgba(0, 255, 136, ${0.3 + Math.sin(time * 2 + x + y) * 0.2})`;
-                    ctx.beginPath();
-                    ctx.arc(x, y, 2, 0, Math.PI * 2);
-                    ctx.fill();
-                }
+            } catch (error) {
+                console.error('Copy failed:', error);
+                showCopyFeedback(this, 'Copy failed');
             }
-        }
-        
-        animationId = requestAnimationFrame(drawCircuit);
-    }
-
-    resizeCanvas();
-    drawCircuit();
-
-    window.addEventListener('resize', resizeCanvas);
-
-    // Cleanup on page unload
-    window.addEventListener('beforeunload', () => {
-        if (animationId) {
-            cancelAnimationFrame(animationId);
-        }
+        });
     });
 }
 
-// Smooth scrolling for navigation
-function initSmoothScrolling() {
+// Show copy feedback with improved styling
+function showCopyFeedback(button, message) {
+    const originalText = button.textContent;
+    const originalBackground = button.style.backgroundColor;
+    const originalColor = button.style.color;
+    
+    // Update button appearance
+    button.textContent = message;
+    button.style.backgroundColor = '#00ff88';
+    button.style.color = '#000814';
+    button.disabled = true;
+    
+    // Reset after 2 seconds
+    setTimeout(() => {
+        button.textContent = originalText;
+        button.style.backgroundColor = originalBackground;
+        button.style.color = originalColor;
+        button.disabled = false;
+    }, 2000);
+}
+
+// Fixed Accordion Functionality for Advanced Security
+function initAccordion() {
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const accordionItem = this.parentElement;
+            const accordionContent = accordionItem.querySelector('.accordion-content');
+            const accordionIcon = this.querySelector('.accordion-icon');
+            const isCurrentlyActive = accordionItem.classList.contains('active');
+            
+            // Close all accordion items first
+            document.querySelectorAll('.accordion-item').forEach(item => {
+                const content = item.querySelector('.accordion-content');
+                const icon = item.querySelector('.accordion-icon');
+                
+                item.classList.remove('active');
+                if (content) {
+                    content.style.maxHeight = '0';
+                }
+                if (icon) {
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            // If this item wasn't active, open it
+            if (!isCurrentlyActive && accordionContent) {
+                accordionItem.classList.add('active');
+                accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
+                if (accordionIcon) {
+                    accordionIcon.style.transform = 'rotate(45deg)';
+                }
+            }
+        });
+    });
+}
+
+// Smooth Scroll Navigation
+function initSmoothScroll() {
+    const navLinks = document.querySelectorAll('.nav__link[href^="#"]');
+    
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
+            e.preventDefault();
             
-            if (href.startsWith('#')) {
-                e.preventDefault();
-                const targetId = href.substring(1);
-                const targetElement = document.getElementById(targetId);
-                
-                if (targetElement) {
-                    const headerHeight = document.getElementById('header').offsetHeight;
-                    const targetPosition = targetElement.offsetTop - headerHeight - 20;
-                    
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
-                    });
-                }
-            }
-        });
-    });
-
-    // Also handle any other internal links
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href === '#') return;
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
             
-            const targetId = href.substring(1);
-            const targetElement = document.getElementById(targetId);
-            
-            if (targetElement) {
-                e.preventDefault();
-                const headerHeight = document.getElementById('header').offsetHeight;
-                const targetPosition = targetElement.offsetTop - headerHeight - 20;
+            if (targetSection) {
+                const headerHeight = document.querySelector('.header').offsetHeight;
+                const targetPosition = targetSection.offsetTop - headerHeight - 20;
                 
                 window.scrollTo({
                     top: targetPosition,
@@ -379,112 +233,41 @@ function initSmoothScrolling() {
     });
 }
 
-// Visual feedback for button interactions
-function addButtonFeedback(button) {
-    button.style.transform = 'scale(0.95)';
-    setTimeout(() => {
-        button.style.transform = '';
-    }, 150);
-}
-
-// Show success message on page load
-function showSuccessMessage() {
-    // Add a subtle success indicator that the page loaded correctly
-    setTimeout(() => {
-        const logo = document.querySelector('.logo-text');
-        if (logo) {
-            logo.style.animation = 'glow 0.5s ease-in-out';
-            setTimeout(() => {
-                logo.style.animation = '';
-            }, 500);
+// Initialize external links handling
+function initExternalLinks() {
+    const externalLinks = document.querySelectorAll('a[href^="http"], a[href^="https"]');
+    
+    externalLinks.forEach(link => {
+        // Ensure external links open in new tab
+        if (!link.hasAttribute('target')) {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
         }
-    }, 500);
-}
-
-// Search functionality (if search input exists)
-function initSearch() {
-    const searchInput = document.querySelector('input[type="search"]');
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const query = this.value.toLowerCase();
-            const sections = document.querySelectorAll('.section');
-            
-            sections.forEach(section => {
-                const content = section.textContent.toLowerCase();
-                if (content.includes(query) || query === '') {
-                    section.style.display = '';
-                } else {
-                    section.style.display = 'none';
-                }
-            });
-        });
-    }
-}
-
-// Handle form submissions (if any forms exist)
-function initForms() {
-    const forms = document.querySelectorAll('form');
-    forms.forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Add loading state
-            const submitBtn = form.querySelector('button[type="submit"]');
-            if (submitBtn) {
-                const originalText = submitBtn.textContent;
-                submitBtn.textContent = 'Processing...';
-                submitBtn.disabled = true;
-                
-                // Simulate processing
-                setTimeout(() => {
-                    submitBtn.textContent = '✓ Success!';
-                    setTimeout(() => {
-                        submitBtn.textContent = originalText;
-                        submitBtn.disabled = false;
-                        form.reset();
-                    }, 2000);
-                }, 1000);
-            }
-        });
     });
 }
 
-// Initialize additional features
-document.addEventListener('DOMContentLoaded', function() {
-    initSearch();
-    initForms();
-});
-
-// Handle keyboard navigation
-document.addEventListener('keydown', function(e) {
-    // ESC key closes mobile menu
-    if (e.key === 'Escape') {
-        if (navMenu.classList.contains('active')) {
-            navMenu.classList.remove('active');
-            navToggle.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    }
+// Scroll Effects and Animations
+function initScrollEffects() {
+    // Header background opacity on scroll
+    const header = document.querySelector('.header');
     
-    // Enter key activates buttons and links
-    if (e.key === 'Enter') {
-        const focusedElement = document.activeElement;
-        if (focusedElement.classList.contains('accordion-header') ||
-            focusedElement.classList.contains('expand-btn') ||
-            focusedElement.classList.contains('platform-tab') ||
-            focusedElement.classList.contains('tab-btn')) {
-            focusedElement.click();
+    window.addEventListener('scroll', function() {
+        const scrolled = window.pageYOffset;
+        
+        // Update header opacity
+        if (scrolled > 50) {
+            header.style.background = 'rgba(0, 8, 20, 0.98)';
+        } else {
+            header.style.background = 'rgba(0, 8, 20, 0.95)';
         }
-    }
-});
-
-// Performance optimization: Intersection Observer for animations
-function initIntersectionObserver() {
+    });
+    
+    // Intersection Observer for fade-in animations
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -50px 0px'
     };
-
+    
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -493,53 +276,77 @@ function initIntersectionObserver() {
             }
         });
     }, observerOptions);
-
-    // Observe cards and sections for fade-in effect
-    const elementsToObserve = document.querySelectorAll('.card, .tool-card, .contact-card, .step-card, .emergency-card');
-    elementsToObserve.forEach(el => {
+    
+    // Observe elements for animation
+    const animateElements = document.querySelectorAll('.stat-card, .service-card, .tool-card');
+    animateElements.forEach(el => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
+        el.style.transform = 'translateY(30px)';
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
     });
 }
 
-// Initialize intersection observer when page is loaded
-window.addEventListener('load', initIntersectionObserver);
-
-// Error handling for missing elements
-function safeAddEventListener(element, event, handler) {
-    if (element) {
-        element.addEventListener(event, handler);
+// Keyboard navigation support
+document.addEventListener('keydown', function(e) {
+    // ESC key to close mobile menu
+    if (e.key === 'Escape') {
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (navToggle && navMenu) {
+            navToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+        }
     }
+    
+    // Enter/Space for accordion headers
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('accordion-header')) {
+        e.preventDefault();
+        e.target.click();
+    }
+});
+
+// Enhanced accessibility
+function enhanceAccessibility() {
+    // Add ARIA labels where needed
+    const buttons = document.querySelectorAll('button:not([aria-label])');
+    buttons.forEach(btn => {
+        if (btn.classList.contains('nav__toggle')) {
+            btn.setAttribute('aria-label', 'Toggle navigation menu');
+        }
+        if (btn.classList.contains('copy-btn')) {
+            btn.setAttribute('aria-label', 'Copy message to clipboard');
+        }
+        if (btn.classList.contains('accordion-header')) {
+            btn.setAttribute('aria-expanded', 'false');
+            btn.setAttribute('role', 'button');
+        }
+    });
+    
+    // Update accordion ARIA states
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+            const isExpanded = this.parentElement.classList.contains('active');
+            this.setAttribute('aria-expanded', isExpanded.toString());
+        });
+    });
 }
 
-// Console message for developers
+// Initialize accessibility enhancements
+enhanceAccessibility();
+
+// Console branding message
 console.log(`
-🔰 TeNeT TechLab Security Hub
-━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Building Digital Safety Together
-For Our Communities
-
-Version: 1.0
-Status: ✅ All systems operational
-Security Level: 🔒 Maximum
-
-Contact: TeNeT.TechLabs@Gmail.com
-GitHub: https://GitHub.com/TeNeT-TechLabs
-━━━━━━━━━━━━━━━━━━━━━━━━━━━
-`);
-
-// Export functions for testing (if in a module environment)
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = {
-        initNavigation,
-        initPlatformTabs,
-        initExpandButtons,
-        initCopyButtons,
-        initMessageTabs,
-        initAccordion,
-        initCircuitAnimation,
-        initSmoothScrolling
-    };
-}
+%c🔒 TeNeT TechLab OPSEC Community 🔒
+%cBuilding Digital Safety Together
+%c
+For security questions: TeNeT.TechLabs@Gmail.com
+Portfolio: https://archangel13gtl.github.io/
+GitHub: https://github.com/TeNeT-TechLabs
+`, 
+'color: #00ff88; font-size: 16px; font-weight: bold;',
+'color: #8ecae6; font-size: 14px;',
+'color: #ffffff; font-size: 12px;'
+);
