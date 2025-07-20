@@ -10,7 +10,7 @@
 
 ---
 
-## 🚀 **[LAUNCH LIVE PRESENTATION →](https://[YOUR-GITHUB-USERNAME].github.io/android-security-presentation/)**
+## 🚀 **[LAUNCH LIVE PRESENTATION →](https://TeNeT-TechLab.github.io/android-security-presentation/)**
 ### 👆 *Click above to access the interactive training right now!*
 
 ---
