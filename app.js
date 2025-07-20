@@ -1,618 +1,635 @@
-// TeNeT TechLab OPSEC Community Hub - Interactive JavaScript
-// All functionality working with proper event handling - FIXED VERSION
+// TeNeT TechLab - Building Digital Safety Together
+// Fixed JavaScript functionality addressing all navigation and interaction issues
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize all components
-    initParticles();
-    initMobileMenu();
-    initPlatformTabs();
-    initPlatformSelector();
-    initMessageTabs();
-    initCopyButtons();
-    initFeatureToggles();
-    initSmoothScrolling();
-    initScrollEffects();
-    
-    console.log('TeNeT TechLab OPSEC Hub initialized successfully');
-});
+(function () {
+  "use strict";
 
-// Particle System
-function initParticles() {
-    const particles = document.getElementById('particles');
-    if (!particles) return;
-    
-    // Create animated circuit patterns
-    function createCircuitPattern() {
-        const circuit = document.createElement('div');
-        circuit.className = 'circuit-line';
-        circuit.style.cssText = `
-            position: absolute;
-            width: ${Math.random() * 200 + 100}px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #00ff88, transparent);
-            top: ${Math.random() * 100}%;
-            left: ${Math.random() * 100}%;
-            opacity: ${Math.random() * 0.5 + 0.2};
-            animation: circuitFlow ${Math.random() * 10 + 5}s linear infinite;
-            transform: rotate(${Math.random() * 360}deg);
-        `;
-        
-        particles.appendChild(circuit);
-        
-        setTimeout(() => {
-            if (circuit.parentNode) {
-                circuit.parentNode.removeChild(circuit);
-            }
-        }, 15000);
+  // Global namespace
+  const TeNeT = {};
+  window.TeNeT = TeNeT;
+
+  /*-----------------------------
+    Utility Functions
+  -----------------------------*/
+  const $ = (selector, context = document) => context.querySelector(selector);
+  const $$ = (selector, context = document) => [...context.querySelectorAll(selector)];
+
+  function debounce(func, delay = 100) {
+    let timeoutId;
+    return (...args) => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
+  }
+
+  function throttle(func, delay = 16) {
+    let lastCall = 0;
+    return (...args) => {
+      const now = Date.now();
+      if (now - lastCall >= delay) {
+        lastCall = now;
+        func.apply(this, args);
+      }
+    };
+  }
+
+  /*-----------------------------
+    Header Height & Scroll Management
+  -----------------------------*/
+  function updateHeaderHeight() {
+    const header = $('.header');
+    if (header) {
+      const headerHeight = header.offsetHeight;
+      document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+      
+      // Update scroll margin for all sections
+      const sections = $$('.section, #hero, #emergency, #setup, #tools, #community, #contact');
+      sections.forEach(section => {
+        section.style.scrollMarginTop = `${headerHeight + 32}px`;
+      });
     }
-    
-    // Create circuit patterns periodically
-    setInterval(createCircuitPattern, 2000);
-    
-    // Add CSS for circuit animation
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes circuitFlow {
-            0% { transform: translateX(-100px) rotate(var(--rotation, 0deg)); opacity: 0; }
-            50% { opacity: 1; }
-            100% { transform: translateX(100px) rotate(var(--rotation, 0deg)); opacity: 0; }
-        }
-    `;
-    document.head.appendChild(style);
-}
+  }
 
-// Mobile Menu Navigation - FIXED
-function initMobileMenu() {
-    const mobileToggle = document.getElementById('mobileToggle');
-    const navMenu = document.getElementById('navMenu');
-    
-    if (!mobileToggle || !navMenu) return;
-    
-    mobileToggle.addEventListener('click', function(e) {
+  function smoothScrollTo(elementId) {
+    const targetEl = document.getElementById(elementId);
+    if (targetEl) {
+      const header = $('.header');
+      const headerHeight = header ? header.offsetHeight : 70;
+      const targetPosition = targetEl.offsetTop - headerHeight - 20;
+      
+      window.scrollTo({
+        top: Math.max(0, targetPosition),
+        behavior: 'smooth'
+      });
+      return true;
+    }
+    return false;
+  }
+
+  /*-----------------------------
+    Navigation System
+  -----------------------------*/
+  function initNavigation() {
+    const navToggle = $("[data-nav-toggle]");
+    const navMenu = $("[data-nav-menu]");
+    const navLinks = $$("[data-nav-link]");
+
+    if (!navToggle || !navMenu) return;
+
+    // Set up header height
+    updateHeaderHeight();
+    window.addEventListener('resize', debounce(updateHeaderHeight, 100));
+
+    // Toggle mobile navigation
+    function toggleNav() {
+      const isOpen = navMenu.classList.toggle("open");
+      navToggle.setAttribute("aria-expanded", isOpen);
+      document.body.classList.toggle("nav-open", isOpen);
+      
+      // Animate hamburger
+      const hamburgers = $$('.hamburger', navToggle);
+      hamburgers.forEach((burger, index) => {
+        if (isOpen) {
+          if (index === 0) burger.style.transform = 'rotate(45deg) translate(6px, 6px)';
+          if (index === 1) burger.style.opacity = '0';
+          if (index === 2) burger.style.transform = 'rotate(-45deg) translate(6px, -6px)';
+        } else {
+          burger.style.transform = '';
+          burger.style.opacity = '';
+        }
+      });
+    }
+
+    navToggle.addEventListener("click", (e) => {
+      e.preventDefault();
+      toggleNav();
+    });
+
+    // Handle all navigation links
+    navLinks.forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        
+        const href = link.getAttribute("href");
+        if (href && href.startsWith("#")) {
+          const targetId = href.slice(1);
+          
+          // Close mobile nav if open
+          if (navMenu.classList.contains("open")) {
+            toggleNav();
+          }
+          
+          // Scroll to target
+          setTimeout(() => {
+            smoothScrollTo(targetId);
+          }, navMenu.classList.contains("open") ? 300 : 0);
+        }
+      });
+    });
+
+    // Handle all scroll-to buttons
+    const scrollButtons = $$('[data-scroll-to]');
+    scrollButtons.forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = button.getAttribute('data-scroll-to');
+        if (targetId) {
+          smoothScrollTo(targetId);
+        }
+      });
+    });
+
+    // Close nav when clicking outside
+    document.addEventListener("click", (e) => {
+      if (
+        navMenu.classList.contains("open") &&
+        !navMenu.contains(e.target) &&
+        !navToggle.contains(e.target)
+      ) {
+        toggleNav();
+      }
+    });
+
+    // Handle escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && navMenu.classList.contains("open")) {
+        toggleNav();
+      }
+    });
+  }
+
+  /*-----------------------------
+    Platform Tabs (2FA Setup) - FIXED
+  -----------------------------*/
+  function initTabs() {
+    const tabButtons = $$(".tab-button");
+    const tabPanels = $$(".tab-panel");
+
+    if (tabButtons.length === 0) return;
+
+    function switchTab(targetTab) {
+      // Clear all active states first
+      tabButtons.forEach((btn) => {
+        btn.classList.remove("active");
+        btn.setAttribute("aria-selected", "false");
+      });
+
+      tabPanels.forEach((panel) => {
+        panel.classList.remove("active");
+        panel.style.display = 'none';
+      });
+
+      // Set active states for target tab
+      tabButtons.forEach((btn) => {
+        if (btn.dataset.tab === targetTab) {
+          btn.classList.add("active");
+          btn.setAttribute("aria-selected", "true");
+        }
+      });
+
+      tabPanels.forEach((panel) => {
+        if (panel.id === `${targetTab}-panel`) {
+          panel.classList.add("active");
+          panel.style.display = 'block';
+        }
+      });
+    }
+
+    // Add click handlers
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        const tab = button.dataset.tab;
+        if (tab) {
+          switchTab(tab);
+        }
+      });
+
+      // Keyboard navigation
+      button.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          button.click();
+        }
+      });
+    });
+
+    // Initialize with Android tab active by default
+    switchTab('android');
+  }
+
+  /*-----------------------------
+    Copy to Clipboard - FIXED
+  -----------------------------*/
+  function initCopyFunctionality() {
+    const copyButtons = $$(".btn-copy");
+    const copyNotification = $("#copy-notification");
+
+    if (!copyNotification) return;
+
+    async function copyToClipboard(text) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          showNotification('Copied to clipboard! ✅');
+        } else {
+          // Fallback for older browsers
+          const textArea = document.createElement('textarea');
+          textArea.value = text;
+          textArea.style.cssText = `
+            position: fixed;
+            left: -9999px;
+            top: -9999px;
+            opacity: 0;
+            pointer-events: none;
+          `;
+          
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          
+          try {
+            const successful = document.execCommand('copy');
+            if (successful) {
+              showNotification('Copied to clipboard! ✅');
+            } else {
+              throw new Error('Copy command failed');
+            }
+          } catch (err) {
+            console.error('Fallback copy failed:', err);
+            showNotification('Copy failed - please select and copy manually');
+          }
+          
+          document.body.removeChild(textArea);
+        }
+      } catch (err) {
+        console.error('Copy operation failed:', err);
+        showNotification('Copy failed - please try again');
+      }
+    }
+
+    function showNotification(message) {
+      copyNotification.textContent = message;
+      copyNotification.classList.add("show");
+      
+      setTimeout(() => {
+        copyNotification.classList.remove("show");
+      }, 3000);
+    }
+
+    // Add event listeners to copy buttons
+    copyButtons.forEach((button) => {
+      button.addEventListener("click", (e) => {
         e.preventDefault();
         e.stopPropagation();
         
-        navMenu.classList.toggle('active');
-        mobileToggle.classList.toggle('active');
-        
-        // Animate hamburger lines
-        const lines = mobileToggle.querySelectorAll('.hamburger-line');
-        if (mobileToggle.classList.contains('active')) {
-            lines[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-            lines[1].style.opacity = '0';
-            lines[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
-        } else {
-            lines[0].style.transform = 'none';
-            lines[1].style.opacity = '1';
-            lines[2].style.transform = 'none';
-            document.body.style.overflow = 'auto';
+        const textToCopy = button.getAttribute('data-copy-text');
+        if (textToCopy) {
+          copyToClipboard(textToCopy);
         }
-    });
-    
-    // Close mobile menu when clicking nav links
-    const navLinks = navMenu.querySelectorAll('.nav-link');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navMenu.classList.remove('active');
-            mobileToggle.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            
-            // Reset hamburger lines
-            const lines = mobileToggle.querySelectorAll('.hamburger-line');
-            lines[0].style.transform = 'none';
-            lines[1].style.opacity = '1';
-            lines[2].style.transform = 'none';
-        });
-    });
-    
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!mobileToggle.contains(e.target) && !navMenu.contains(e.target)) {
-            navMenu.classList.remove('active');
-            mobileToggle.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            
-            // Reset hamburger lines
-            const lines = mobileToggle.querySelectorAll('.hamburger-line');
-            lines[0].style.transform = 'none';
-            lines[1].style.opacity = '1';
-            lines[2].style.transform = 'none';
+      });
+
+      // Keyboard support
+      button.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          button.click();
         }
-    });
-}
+      });
 
-// Platform Tabs (Recovery and Auth sections)
-function initPlatformTabs() {
-    // Handle all platform tab containers
-    const tabContainers = document.querySelectorAll('.platform-tabs');
+      // Make focusable
+      if (!button.hasAttribute('tabindex')) {
+        button.setAttribute('tabindex', '0');
+      }
+      button.setAttribute('role', 'button');
+      button.setAttribute('aria-label', 'Copy message to clipboard');
+    });
+  }
+
+  /*-----------------------------
+    External Links - FIXED
+  -----------------------------*/
+  function initExternalLinks() {
+    const externalLinks = $$('a[href^="http"], a[href^="https://"], a[target="_blank"]');
     
-    tabContainers.forEach(container => {
-        const tabBtns = container.querySelectorAll('.tab-btn');
-        const section = container.closest('.section');
-        const contents = section.querySelectorAll('.platform-content');
+    externalLinks.forEach(link => {
+      // Ensure external links open in new tabs
+      if (!link.hasAttribute('target')) {
+        link.setAttribute('target', '_blank');
+      }
+      if (!link.hasAttribute('rel')) {
+        link.setAttribute('rel', 'noopener noreferrer');
+      }
+
+      // Add click handler for visual feedback
+      link.addEventListener('click', function(e) {
+        // Don't prevent default - let the browser handle the external link
+        const originalText = this.textContent;
+        this.style.opacity = '0.7';
         
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const platform = this.getAttribute('data-platform');
-                
-                // Remove active class from all tabs in this container
-                tabBtns.forEach(tab => tab.classList.remove('active'));
-                // Add active class to clicked tab
-                this.classList.add('active');
-                
-                // Hide all content in this section
-                contents.forEach(content => {
-                    content.classList.remove('active');
-                });
-                
-                // Show content for selected platform
-                const targetContent = section.querySelector(`.platform-content[data-platform="${platform}"]`);
-                if (targetContent) {
-                    targetContent.classList.add('active');
-                }
-                
-                // Add visual feedback
-                this.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    this.style.transform = 'scale(1)';
-                }, 150);
-            });
-        });
+        // Reset after a short delay
+        setTimeout(() => {
+          this.style.opacity = '';
+        }, 1000);
+      });
     });
-}
+  }
 
-// Global Platform Selector (Tools section)
-function initPlatformSelector() {
-    const platformBtns = document.querySelectorAll('.platform-btn');
-    const toolPlatforms = document.querySelectorAll('.tool-platform');
+  /*-----------------------------
+    Enhanced Button Interactions
+  -----------------------------*/
+  function initButtonEnhancements() {
+    const buttons = $$('.btn');
     
-    platformBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-            const platform = this.getAttribute('data-platform');
-            
-            // Remove active class from all platform buttons
-            platformBtns.forEach(button => button.classList.remove('active'));
-            // Add active class to clicked button
-            this.classList.add('active');
-            
-            // Hide all tool platform content
-            toolPlatforms.forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Show content for selected platform
-            const targetPlatforms = document.querySelectorAll(`.tool-platform[data-platform="${platform}"]`);
-            targetPlatforms.forEach(platform => {
-                platform.classList.add('active');
-            });
-            
-            // Add visual feedback
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 150);
-            
-            // Trigger tool card animations
-            const toolCards = document.querySelectorAll('.tool-card');
-            toolCards.forEach((card, index) => {
-                card.style.animation = 'none';
-                setTimeout(() => {
-                    card.style.animation = `fadeInUp 0.6s ease-out ${index * 0.1}s both`;
-                }, 50);
-            });
-        });
-    });
-}
-
-// Message Language Tabs
-function initMessageTabs() {
-    const msgTabs = document.querySelectorAll('.msg-tab');
-    const messageContents = document.querySelectorAll('.message-content');
-    
-    msgTabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            const lang = this.getAttribute('data-lang');
-            
-            // Remove active class from all tabs
-            msgTabs.forEach(t => t.classList.remove('active'));
-            // Add active class to clicked tab
-            this.classList.add('active');
-            
-            // Hide all message content
-            messageContents.forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Show content for selected language
-            const targetContent = document.querySelector(`.message-content[data-lang="${lang}"]`);
-            if (targetContent) {
-                targetContent.classList.add('active');
-            }
-            
-            // Add visual feedback
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 150);
-        });
-    });
-}
-
-// Copy to Clipboard Functionality
-function initCopyButtons() {
-    const copyBtns = document.querySelectorAll('.copy-btn');
-    
-    copyBtns.forEach(btn => {
-        btn.addEventListener('click', async function() {
-            const targetId = this.getAttribute('data-target');
-            const targetElement = document.getElementById(targetId);
-            
-            if (!targetElement) return;
-            
-            try {
-                let textToCopy = '';
-                
-                if (targetElement.tagName.toLowerCase() === 'input') {
-                    textToCopy = targetElement.value;
-                } else if (targetElement.tagName.toLowerCase() === 'textarea') {
-                    textToCopy = targetElement.value;
-                } else {
-                    textToCopy = targetElement.textContent || targetElement.innerText;
-                }
-                
-                // Use modern clipboard API
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    await navigator.clipboard.writeText(textToCopy);
-                } else {
-                    // Fallback method
-                    targetElement.select();
-                    targetElement.setSelectionRange(0, 99999); // For mobile devices
-                    document.execCommand('copy');
-                }
-                
-                // Visual feedback
-                const originalText = this.textContent;
-                this.textContent = 'Copied!';
-                this.style.background = 'linear-gradient(135deg, #00cc77, #00aa66)';
-                this.style.transform = 'scale(0.95)';
-                
-                setTimeout(() => {
-                    this.textContent = originalText;
-                    this.style.background = 'linear-gradient(135deg, #00ff88, #00cc77)';
-                    this.style.transform = 'scale(1)';
-                }, 1500);
-                
-                // Show success notification
-                showNotification('Copied to clipboard!', 'success');
-                
-            } catch (err) {
-                console.error('Failed to copy text: ', err);
-                showNotification('Failed to copy. Please try again.', 'error');
-            }
-        });
-    });
-}
-
-// Feature Toggle (Expand/Collapse) - COMPLETELY FIXED
-function initFeatureToggles() {
-    const featureToggles = document.querySelectorAll('.feature-toggle');
-    
-    featureToggles.forEach(toggle => {
-        toggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const targetId = this.getAttribute('data-target');
-            const targetContent = document.getElementById(targetId);
-            const toggleIcon = this.querySelector('.toggle-icon');
-            
-            if (!targetContent) {
-                console.error('Target content not found:', targetId);
-                return;
-            }
-            
-            // Toggle active state
-            const isActive = this.classList.contains('active');
-            
-            if (isActive) {
-                // Collapse
-                this.classList.remove('active');
-                targetContent.classList.remove('active');
-                toggleIcon.textContent = '+';
-                toggleIcon.style.transform = 'rotate(0deg)';
-                
-                // Animate collapse
-                targetContent.style.maxHeight = '0px';
-                targetContent.style.opacity = '0';
-                targetContent.style.paddingTop = '0px';
-                targetContent.style.paddingBottom = '0px';
-                
-            } else {
-                // Expand
-                this.classList.add('active');
-                targetContent.classList.add('active');
-                toggleIcon.textContent = '−'; // Using minus symbol instead of X
-                toggleIcon.style.transform = 'rotate(0deg)';
-                
-                // Set initial state for animation
-                targetContent.style.display = 'block';
-                targetContent.style.opacity = '0';
-                targetContent.style.maxHeight = '0px';
-                targetContent.style.paddingTop = '0px';
-                targetContent.style.paddingBottom = '0px';
-                
-                // Force reflow
-                targetContent.offsetHeight;
-                
-                // Animate expand
-                targetContent.style.maxHeight = targetContent.scrollHeight + 50 + 'px';
-                targetContent.style.opacity = '1';
-                targetContent.style.paddingTop = '1.5rem';
-                targetContent.style.paddingBottom = '1.5rem';
-            }
-            
-            // Add visual feedback to toggle button
-            this.style.transform = 'scale(0.98)';
-            this.style.background = 'rgba(0, 255, 136, 0.1)';
-            
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-                this.style.background = 'transparent';
-            }, 200);
-        });
-    });
-    
-    // Initialize all feature contents as collapsed with proper transitions
-    const featureContents = document.querySelectorAll('.feature-content');
-    featureContents.forEach(content => {
-        content.style.display = 'block';
-        content.style.maxHeight = '0px';
-        content.style.overflow = 'hidden';
-        content.style.opacity = '0';
-        content.style.transition = 'all 0.3s ease-out';
-        content.style.paddingTop = '0px';
-        content.style.paddingBottom = '0px';
-        content.classList.remove('active'); // Ensure all start collapsed
-    });
-    
-    // Reset all toggle icons to + state
-    const toggleIcons = document.querySelectorAll('.toggle-icon');
-    toggleIcons.forEach(icon => {
-        icon.textContent = '+';
-        icon.style.transform = 'rotate(0deg)';
-    });
-    
-    // Remove active class from all toggles
-    featureToggles.forEach(toggle => {
-        toggle.classList.remove('active');
-    });
-}
-
-// Smooth Scrolling for Navigation Links
-function initSmoothScrolling() {
-    const navLinks = document.querySelectorAll('a[href^="#"]');
-    
-    navLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            
-            if (targetElement) {
-                const headerOffset = 100; // Account for fixed header
-                const elementPosition = targetElement.offsetTop;
-                const offsetPosition = elementPosition - headerOffset;
-                
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-                
-                // Add visual feedback to the link
-                this.style.color = '#00ff88';
-                setTimeout(() => {
-                    this.style.color = '';
-                }, 1000);
-            }
-        });
-    });
-}
-
-// Scroll Effects and Animations
-function initScrollEffects() {
-    // Intersection Observer for fade-in animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
-                entry.target.style.opacity = '1';
-            }
-        });
-    }, observerOptions);
-    
-    // Observe sections for scroll animations
-    const sections = document.querySelectorAll('.section');
-    sections.forEach(section => {
-        section.style.opacity = '0';
-        observer.observe(section);
-    });
-    
-    // Parallax effect for hero section
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const parallax = document.querySelector('.hero');
-        const speed = 0.5;
+    buttons.forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        // Add ripple effect
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = (e.clientX || 0) - rect.left - size / 2;
+        const y = (e.clientY || 0) - rect.top - size / 2;
         
-        if (parallax) {
-            parallax.style.transform = `translateY(${scrolled * speed}px)`;
+        ripple.style.cssText = `
+          position: absolute;
+          width: ${size}px;
+          height: ${size}px;
+          left: ${x}px;
+          top: ${y}px;
+          background: rgba(255, 255, 255, 0.3);
+          border-radius: 50%;
+          transform: scale(0);
+          animation: ripple 0.6s ease-out;
+          pointer-events: none;
+          z-index: 1;
+        `;
+        
+        if (this.style.position !== 'absolute') {
+          this.style.position = 'relative';
         }
+        this.style.overflow = 'hidden';
+        this.appendChild(ripple);
         
-        // Update header background opacity based on scroll
-        const header = document.querySelector('.header');
-        if (header) {
-            const opacity = Math.min(scrolled / 100, 0.95);
-            header.style.background = `rgba(10, 10, 10, ${opacity})`;
-        }
+        setTimeout(() => {
+          if (ripple.parentNode) {
+            ripple.remove();
+          }
+        }, 600);
+      });
     });
-}
 
-// Notification System
-function showNotification(message, type = 'info') {
-    // Remove any existing notifications
-    const existingNotification = document.querySelector('.notification');
-    if (existingNotification) {
-        existingNotification.remove();
+    // Add ripple animation CSS
+    if (!$('#ripple-styles')) {
+      const style = document.createElement('style');
+      style.id = 'ripple-styles';
+      style.textContent = `
+        @keyframes ripple {
+          to {
+            transform: scale(2);
+            opacity: 0;
+          }
+        }
+      `;
+      document.head.appendChild(style);
     }
-    
-    // Create notification element
-    const notification = document.createElement('div');
-    notification.className = `notification notification--${type}`;
-    notification.textContent = message;
-    
-    // Style the notification
-    notification.style.cssText = `
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        background: ${type === 'success' ? '#00ff88' : type === 'error' ? '#ff4444' : '#4444ff'};
-        color: ${type === 'success' ? '#0a0a0a' : '#ffffff'};
-        padding: 1rem 1.5rem;
-        border-radius: 8px;
-        font-weight: 600;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        z-index: 10000;
-        animation: slideInRight 0.3s ease-out;
-        max-width: 300px;
-        word-wrap: break-word;
+  }
+
+  /*-----------------------------
+    Background Canvas Animation
+  -----------------------------*/
+  function initBackgroundAnimation() {
+    const canvas = $("#background-canvas");
+    if (!canvas || !canvas.getContext) return;
+
+    const ctx = canvas.getContext("2d");
+    const dpr = window.devicePixelRatio || 1;
+    let width, height;
+    let animationId;
+    let particles = [];
+
+    // Skip on mobile for performance
+    if (window.innerWidth < 768 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      canvas.style.display = 'none';
+      return;
+    }
+
+    function resizeCanvas() {
+      width = window.innerWidth;
+      height = Math.max(window.innerHeight, document.body.scrollHeight);
+      
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+      
+      ctx.scale(dpr, dpr);
+      initParticles();
+    }
+
+    function initParticles() {
+      particles.length = 0;
+      const maxParticles = Math.min(60, Math.floor(width / 25));
+      
+      for (let i = 0; i < maxParticles; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: Math.random() * 2 + 0.5,
+          speedX: (Math.random() - 0.5) * 0.4,
+          speedY: (Math.random() - 0.5) * 0.4,
+          opacity: Math.random() * 0.4 + 0.1,
+          color: Math.random() > 0.5 ? '#00ff88' : '#32b8c6',
+          pulse: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function updateParticles() {
+      particles.forEach((particle) => {
+        particle.x += particle.speedX;
+        particle.y += particle.speedY;
+
+        // Bounce off edges
+        if (particle.x <= 0 || particle.x >= width) {
+          particle.speedX *= -0.9;
+          particle.x = Math.max(0, Math.min(width, particle.x));
+        }
+        if (particle.y <= 0 || particle.y >= height) {
+          particle.speedY *= -0.9;
+          particle.y = Math.max(0, Math.min(height, particle.y));
+        }
+
+        // Pulse effect
+        particle.pulse += 0.01;
+        particle.opacity = 0.1 + Math.sin(particle.pulse) * 0.2;
+      });
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, width, height);
+      
+      particles.forEach((particle) => {
+        ctx.globalAlpha = particle.opacity;
+        ctx.fillStyle = particle.color;
+        ctx.shadowColor = particle.color;
+        ctx.shadowBlur = 5;
+        
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
+    }
+
+    function animate() {
+      if (document.hidden) {
+        animationId = requestAnimationFrame(animate);
+        return;
+      }
+
+      updateParticles();
+      drawParticles();
+      animationId = requestAnimationFrame(animate);
+    }
+
+    // Initialize
+    resizeCanvas();
+    animate();
+
+    // Handle resize
+    window.addEventListener("resize", debounce(resizeCanvas, 200));
+
+    // Cleanup
+    window.addEventListener("beforeunload", () => {
+      if (animationId) cancelAnimationFrame(animationId);
+    });
+  }
+
+  /*-----------------------------
+    Accessibility Features
+  -----------------------------*/
+  function initAccessibility() {
+    // Skip to content link
+    const skipLink = document.createElement('a');
+    skipLink.href = '#hero';
+    skipLink.textContent = 'Skip to main content';
+    skipLink.className = 'skip-link';
+    skipLink.style.cssText = `
+      position: absolute;
+      left: -9999px;
+      z-index: 10000;
+      padding: 1rem;
+      background: var(--cyber-primary);
+      color: var(--cyber-bg);
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 4px;
     `;
     
-    // Add slide-in animation
+    skipLink.addEventListener('focus', () => {
+      skipLink.style.left = '1rem';
+      skipLink.style.top = '1rem';
+    });
+    
+    skipLink.addEventListener('blur', () => {
+      skipLink.style.left = '-9999px';
+    });
+    
+    skipLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      smoothScrollTo('hero');
+    });
+    
+    document.body.insertBefore(skipLink, document.body.firstChild);
+
+    // Emergency hotkey (Alt + E)
+    document.addEventListener('keydown', (e) => {
+      if (e.altKey && e.key.toLowerCase() === 'e') {
+        e.preventDefault();
+        smoothScrollTo('emergency');
+        
+        // Focus the emergency button
+        setTimeout(() => {
+          const emergencyBtn = $('.emergency-btn');
+          if (emergencyBtn) {
+            emergencyBtn.focus();
+          }
+        }, 500);
+      }
+    });
+  }
+
+  /*-----------------------------
+    Error Handling
+  -----------------------------*/
+  function initErrorHandling() {
+    window.addEventListener('error', (e) => {
+      console.error('JavaScript error:', e.error);
+    });
+
+    window.addEventListener('unhandledrejection', (e) => {
+      console.error('Unhandled promise rejection:', e.reason);
+      e.preventDefault();
+    });
+  }
+
+  /*-----------------------------
+    Initialize Everything
+  -----------------------------*/
+  function init() {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", init);
+      return;
+    }
+
+    try {
+      console.log('Initializing TeNeT TechLab application...');
+      
+      // Core functionality
+      initErrorHandling();
+      initNavigation();
+      initTabs();
+      initCopyFunctionality();
+      initExternalLinks();
+      initButtonEnhancements();
+      initAccessibility();
+      
+      // Visual enhancements
+      setTimeout(initBackgroundAnimation, 100);
+      
+      // Mark as initialized
+      document.body.classList.add('tenet-initialized');
+      
+      console.log('TeNeT TechLab application initialized successfully');
+    } catch (error) {
+      console.error('Initialization error:', error);
+    }
+  }
+
+  /*-----------------------------
+    Reduced Motion Support
+  -----------------------------*/
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const style = document.createElement('style');
     style.textContent = `
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes slideOutRight {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
-        }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
     `;
-    if (!document.querySelector('style[data-notifications]')) {
-        style.setAttribute('data-notifications', '');
-        document.head.appendChild(style);
-    }
-    
-    // Add to page
-    document.body.appendChild(notification);
-    
-    // Auto-remove after 3 seconds
-    setTimeout(() => {
-        notification.style.animation = 'slideOutRight 0.3s ease-out forwards';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
-    }, 3000);
-    
-    // Allow manual dismissal by clicking
-    notification.addEventListener('click', function() {
-        this.style.animation = 'slideOutRight 0.3s ease-out forwards';
-        setTimeout(() => {
-            if (this.parentNode) {
-                this.parentNode.removeChild(this);
-            }
-        }, 300);
-    });
-}
+    document.head.appendChild(style);
+  }
 
-// Keyboard Navigation Support
-document.addEventListener('keydown', function(e) {
-    // Escape key closes mobile menu
-    if (e.key === 'Escape') {
-        const navMenu = document.getElementById('navMenu');
-        const mobileToggle = document.getElementById('mobileToggle');
-        
-        if (navMenu && navMenu.classList.contains('active')) {
-            navMenu.classList.remove('active');
-            mobileToggle.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            
-            // Reset hamburger lines
-            const lines = mobileToggle.querySelectorAll('.hamburger-line');
-            lines[0].style.transform = 'none';
-            lines[1].style.opacity = '1';
-            lines[2].style.transform = 'none';
-        }
-    }
-    
-    // Enter key activates focused buttons
-    if (e.key === 'Enter') {
-        const focused = document.activeElement;
-        if (focused && (focused.classList.contains('tab-btn') || 
-                       focused.classList.contains('platform-btn') || 
-                       focused.classList.contains('msg-tab') ||
-                       focused.classList.contains('feature-toggle'))) {
-            focused.click();
-        }
-    }
-});
+  // Export to global namespace
+  TeNeT.init = init;
+  TeNeT.version = "3.1.0";
+  TeNeT.utils = { $, $$, debounce, throttle, smoothScrollTo };
 
-// Performance Optimization
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
+  // Auto-initialize
+  init();
 
-// Debounced scroll handler for better performance
-const debouncedScrollHandler = debounce(function() {
-    const scrolled = window.pageYOffset;
-    const header = document.querySelector('.header');
-    
-    if (header) {
-        const opacity = Math.min(scrolled / 100, 0.95);
-        header.style.background = `rgba(10, 10, 10, ${opacity})`;
-    }
-}, 10);
-
-window.addEventListener('scroll', debouncedScrollHandler);
-
-// Error Handling for Failed Operations
-window.addEventListener('error', function(e) {
-    console.error('JavaScript Error:', e.error);
-    // You could show a user-friendly error message here if needed
-});
-
-// Initialize success message
-console.log('🚀 TeNeT TechLab OPSEC Hub fully loaded and interactive!');
-console.log('✅ All features initialized and FIXED:');
-console.log('   - Mobile navigation (FIXED)');
-console.log('   - Platform switching');
-console.log('   - Copy functionality');
-console.log('   - Feature toggles (FIXED)');
-console.log('   - Smooth scrolling');
-console.log('   - Particle effects');
-console.log('   - Scroll animations');
-
-// Export functions for potential external use
-window.TeNeTTechLab = {
-    showNotification,
-    initPlatformTabs,
-    initCopyButtons,
-    initFeatureToggles
-};
+})();
